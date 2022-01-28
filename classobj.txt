@@ -1,0 +1,106 @@
+import java.util.*;
+
+public class testing {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Song[] songs = new Song[5];
+        for (int i = 0; i < 5; i++) {
+            int songId = sc.nextInt();
+            sc.nextLine();
+            String title = sc.nextLine(), artist = sc.nextLine();
+            double duration = sc.nextDouble();
+            songs[i] = new Song(songId, title, artist, duration);
+        }
+        sc.nextLine();
+        String artistOne = sc.nextLine(), artistTwo = sc.nextLine();
+        int answerOne = findSongDurationForArtist(songs, artistOne);
+        Song[] answerTwo = getSongsInAscendingOrder(songs, artistTwo);
+
+        if (answerOne == 0)
+            System.out.println("There are no songs with given artists");
+        else
+            System.out.println(answerOne);
+
+        if (answerTwo == null)
+            System.out.println("There are no songs with given artists");
+        else {
+            for (Song song : answerTwo) {
+                System.out.println(song.getSongId());
+                System.out.println(song.getTitle());
+            }
+        }
+        sc.close();
+    }
+
+    static int findSongDurationForArtist(Song[] songs, String artist) {
+        int res = 0;
+        for (Song song : songs) {
+            if (song.getArtist().equals(artist))
+                res += song.getDuration();
+        }
+        return res;
+    }
+
+    static Song[] getSongsInAscendingOrder(Song[] songs, String artist) {
+        List<Song> list = new ArrayList<>();
+        for (Song song : songs) {
+            if (song.getArtist().equals(artist))
+                list.add(song);
+        }
+        Collections.sort(list, (x, y) -> {
+            return (int) x.getDuration() - (int) y.getDuration();
+        });
+        Song[] res = new Song[list.size()];
+        for (int i = 0; i < res.length; i++)
+            res[i] = list.get(i);
+        if (res.length == 0)
+            return null;
+        return res;
+    }
+}
+
+class Song {
+    private int songId;
+    private String title, artist;
+    private double duration;
+
+    public Song(int songId, String title, String artist, double duration) {
+        this.artist = artist;
+        this.duration = duration;
+        this.songId = songId;
+        this.title = title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public int getSongId() {
+        return songId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public void setSongId(int songId) {
+        this.songId = songId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+}
